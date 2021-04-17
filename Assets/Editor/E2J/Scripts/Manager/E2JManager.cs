@@ -52,12 +52,12 @@ namespace E2J {
                     propertyNames.Add(currentCell.StringCellValue);
                 }
 
-                var rowPairList = new List<List<KeyValuePair<string, string>>>();
+                var rowPairList = new List<HashSet<KeyValuePair<string, string>>>();
                 
                 for(int i = 1; i <= sheet.LastRowNum; i++) {
                     IRow currentRow = sheet.GetRow(i);
 
-                    var cellPairList = new List<KeyValuePair<string, string>>();
+                    var cellPairList = new HashSet<KeyValuePair<string, string>>();
                     
                     for(int j = 0; j < currentRow.Cells.Count; j++) {
                         ICell currentCell = currentRow.GetCell(j);
@@ -74,6 +74,8 @@ namespace E2J {
                         
                         cellPairList.Add(new KeyValuePair<string, string>(propertyNames[j], cellValue));
                     }
+                    
+                    rowPairList.Add(cellPairList);
                 }
                 
                 foreach(Assembly assembly in AppDomain.CurrentDomain.GetAssemblies()) {
@@ -104,7 +106,19 @@ namespace E2J {
 
                             foreach(var propertyName in propertyNames) {
                                 PropertyInfo propertyInfo = descriptorType.GetProperty(propertyName);
-                                propertyInfo.SetValue(descriptorObject, rowPairList[i]);
+
+                                var keyValuePair = new KeyValuePair<string, string>();
+                                
+                                foreach(var pair in rowPairList[i]) {
+                                    if(pair.Key != propertyName) {
+                                        continue;
+                                    }
+
+                                    keyValuePair = pair;
+                                    break;
+                                }
+                                
+                                propertyInfo.SetValue(descriptorObject, keyValuePair.Value);
                             }
                             
                             activeDescriptors.Add(descriptorObject);
