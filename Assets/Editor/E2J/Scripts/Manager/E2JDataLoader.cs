@@ -16,7 +16,7 @@ using NPOI.SS.Formula.Functions;
 using UnityEditor;
 
 namespace E2J {
-    public class E2JManager : AssetPostprocessor{
+    public class E2JDataLoader : AssetPostprocessor{
 
         private static readonly string tablePath = "Assets/Editor/Excels";
         
