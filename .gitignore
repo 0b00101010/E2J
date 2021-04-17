@@ -62,3 +62,11 @@ crashlytics-build.properties
 .idea/.idea.E2J/.idea/
 
 .idea/.idea.E2J/
+
+Assets/Editor/Excels.meta
+
+Assets/Editor/Excels/
+
+Assets/Editor/E2J/Scripts/Manager/TestManager.cs
+
+Assets/Editor/E2J/Scripts/Manager/TestManager.cs.meta
