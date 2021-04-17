@@ -127,5 +127,25 @@ namespace E2J {
                 }
             }
         }
+
+        private static void SaveData(string tableName, List<string> jsonList) {
+            var directoryPath = new DirectoryInfo( "Assets/Resources/JsonTable");
+            
+            if(directoryPath.Exists == false) {
+                directoryPath.Create();
+            }
+
+            var filePath = $"{directoryPath}/{tableName}.txt";
+            
+            if(File.Exists(filePath)) {
+                File.Delete(filePath);
+            }
+
+            using(StreamWriter writer = new StreamWriter(filePath)) {
+                foreach(var jsonText in jsonList) {
+                    writer.WriteLine($"{jsonText},");
+                }
+            }
+        }
     }
 }
