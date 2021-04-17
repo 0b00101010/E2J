@@ -126,6 +126,10 @@ namespace E2J {
                     }
                 }
                 
+                if(activeDescriptors.Count <= 0) {
+                    return;
+                }
+                
                 SaveData(fileNameWithoutExtension, activeDescriptors);
             }
         }
