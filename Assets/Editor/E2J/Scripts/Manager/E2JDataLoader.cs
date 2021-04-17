@@ -22,8 +22,12 @@ namespace E2J {
         
         public static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets,
             string[] movedFromAssetPaths) {
-            DataLoad("Test.xlsx");
-            
+
+            foreach(var importedAsset in importedAssets) {
+                if(importedAsset.Contains(tablePath) && (Path.GetExtension(importedAsset).Equals(".xlsx") || Path.GetExtension(importedAsset).Equals(".xls"))) {
+                    DataLoad(Path.GetFileName(importedAsset));
+                }                
+            }
         }
 
         private static void DataLoad(string fileName) {
