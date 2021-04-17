@@ -145,7 +145,7 @@ namespace E2J {
 
             using(StreamWriter writer = new StreamWriter(filePath)) {
                 foreach(var jsonText in jsonList) {
-                    writer.WriteLine($"{jsonText},");
+                    writer.WriteLine($"{jsonText}");
                 }
             }
         }
