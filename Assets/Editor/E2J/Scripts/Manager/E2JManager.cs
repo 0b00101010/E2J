@@ -99,7 +99,7 @@ namespace E2J {
                             continue;
                         }
 
-                        var activeDescriptors = new List<object>();
+                        var activeDescriptors = new List<string>();
                         
                         for(int i = 0; i < rowPairList.Count; i++) {
                             var descriptorObject = Activator.CreateInstance(descriptorType);
@@ -121,10 +121,8 @@ namespace E2J {
                                 fieldInfo.SetValue(descriptorObject, keyValuePair.Value);
                             }
                             
-                            activeDescriptors.Add(descriptorObject);
+                            activeDescriptors.Add(JsonUtility.ToJson(descriptorObject));
                         }
-                        
-                        // TODO : Convert activeDescriptors list to Table Descriptor 파일 
                     }
                 }
             }
