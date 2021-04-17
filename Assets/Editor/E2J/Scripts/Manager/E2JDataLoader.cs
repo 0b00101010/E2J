@@ -78,6 +78,8 @@ namespace E2J {
                     rowPairList.Add(cellPairList);
                 }
                 
+                var activeDescriptors = new List<string>();
+                
                 foreach(Assembly assembly in AppDomain.CurrentDomain.GetAssemblies()) {
                     foreach(Type type in assembly.GetTypes()) {
                         var attributes = type.GetCustomAttributes(typeof(DescriptorAttribute), true);
@@ -99,8 +101,6 @@ namespace E2J {
                             continue;
                         }
 
-                        var activeDescriptors = new List<string>();
-                        
                         for(int i = 0; i < rowPairList.Count; i++) {
                             var descriptorObject = Activator.CreateInstance(descriptorType);
 
@@ -125,6 +125,8 @@ namespace E2J {
                         }
                     }
                 }
+                
+                SaveData(fileNameWithoutExtension, activeDescriptors);
             }
         }
 
