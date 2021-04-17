@@ -45,11 +45,11 @@ namespace E2J {
 
                 IRow settingInfoRow = sheet.GetRow(0);
 
-                var propertyNames = new List<string>();
-                
+                var fieldNames = new List<string>();
+
                 for(int i = 0; i < settingInfoRow.Cells.Count; i++) {
                     ICell currentCell = settingInfoRow.GetCell(i);
-                    propertyNames.Add(currentCell.StringCellValue);
+                    fieldNames.Add(currentCell.StringCellValue);
                 }
 
                 var rowPairList = new List<HashSet<KeyValuePair<string, string>>>();
@@ -72,7 +72,7 @@ namespace E2J {
                             _ => string.Empty,
                         };
                         
-                        cellPairList.Add(new KeyValuePair<string, string>(propertyNames[j], cellValue));
+                        cellPairList.Add(new KeyValuePair<string, string>(fieldNames[j], cellValue));
                     }
                     
                     rowPairList.Add(cellPairList);
@@ -104,13 +104,13 @@ namespace E2J {
                         for(int i = 0; i < rowPairList.Count; i++) {
                             var descriptorObject = Activator.CreateInstance(descriptorType);
 
-                            foreach(var propertyName in propertyNames) {
-                                PropertyInfo propertyInfo = descriptorType.GetProperty(propertyName);
+                            foreach(var fieldName in fieldNames) {
+                                FieldInfo fieldInfo = descriptorType.GetField(fieldName);
 
                                 var keyValuePair = new KeyValuePair<string, string>();
                                 
                                 foreach(var pair in rowPairList[i]) {
-                                    if(pair.Key != propertyName) {
+                                    if(pair.Key != fieldName) {
                                         continue;
                                     }
 
@@ -118,7 +118,7 @@ namespace E2J {
                                     break;
                                 }
                                 
-                                propertyInfo.SetValue(descriptorObject, keyValuePair.Value);
+                                fieldInfo.SetValue(descriptorObject, keyValuePair.Value);
                             }
                             
                             activeDescriptors.Add(descriptorObject);
