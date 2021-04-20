@@ -53,6 +53,10 @@ namespace E2J {
 
                 for(int i = 0; i < settingInfoRow.Cells.Count; i++) {
                     ICell currentCell = settingInfoRow.GetCell(i);
+                    if(currentCell.StringCellValue.StartsWith("_")) {
+                        continue;
+                    }
+                    
                     fieldNames.Add(currentCell.StringCellValue);
                 }
 
