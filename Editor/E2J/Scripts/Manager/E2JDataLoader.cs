@@ -125,6 +125,11 @@ namespace E2J {
                             foreach(var fieldName in fieldNames) {
                                 FieldInfo fieldInfo = descriptorType.GetField(fieldName);
 
+                                if(fieldInfo == null) {
+                                    Debug.LogError($"\"{fieldName}\" Field Not found in descriptor.");
+                                    return;
+                                }
+
                                 var keyValuePair = new KeyValuePair<string, string>();
                                 
                                 foreach(var pair in rowPairList[i]) {
