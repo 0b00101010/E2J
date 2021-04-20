@@ -11,9 +11,3 @@ namespace E2J {
         }
     }   
 }
-
-[Descriptor("Test")]
-public class TestDescriptor {
-    public string ID;
-    public string TestValue;
-}
