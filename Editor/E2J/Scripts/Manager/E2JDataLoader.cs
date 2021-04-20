@@ -50,7 +50,8 @@ namespace E2J {
                 IRow settingInfoRow = sheet.GetRow(0);
 
                 var fieldNames = new List<string>();
-
+                var dataColumns = new List<int>();
+                
                 for(int i = 0; i < settingInfoRow.Cells.Count; i++) {
                     ICell currentCell = settingInfoRow.GetCell(i);
                     if(currentCell.StringCellValue.StartsWith("_")) {
@@ -58,6 +59,7 @@ namespace E2J {
                     }
                     
                     fieldNames.Add(currentCell.StringCellValue);
+                    dataColumns.Add(i);
                 }
 
                 var rowPairList = new List<HashSet<KeyValuePair<string, string>>>();
@@ -67,8 +69,12 @@ namespace E2J {
 
                     var cellPairList = new HashSet<KeyValuePair<string, string>>();
                     
-                    for(int j = 0; j < currentRow.Cells.Count; j++) {
-                        ICell currentCell = currentRow.GetCell(j);
+                    for(int j = 0; j < dataColumns.Count; j++) {
+                        ICell currentCell = currentRow.GetCell(dataColumns[j]);
+
+                        if(currentCell == null) {
+                            continue;
+                        }
                         
                         var cellValue = currentCell.CellType switch {
                             CellType.Blank => string.Empty,
@@ -81,6 +87,10 @@ namespace E2J {
                         };
                         
                         cellPairList.Add(new KeyValuePair<string, string>(fieldNames[j], cellValue));
+                    }
+
+                    if(cellPairList == null) {
+                        continue;
                     }
                     
                     rowPairList.Add(cellPairList);
