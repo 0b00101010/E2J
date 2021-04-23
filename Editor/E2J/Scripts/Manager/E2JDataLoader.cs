@@ -121,7 +121,8 @@ namespace E2J {
 
                         for(int i = 0; i < rowPairList.Count; i++) {
                             var descriptorObject = Activator.CreateInstance(descriptorType);
-
+                            bool isDescriptorNull = true;
+                            
                             foreach(var fieldName in fieldNames) {
                                 FieldInfo fieldInfo = descriptorType.GetField(fieldName);
 
@@ -140,8 +141,17 @@ namespace E2J {
                                     keyValuePair = pair;
                                     break;
                                 }
-                                
-                                fieldInfo.SetValue(descriptorObject, keyValuePair.Value);
+
+                                if(string.IsNullOrEmpty(keyValuePair.Value)) {
+                                    continue;
+                                }
+
+                                fieldInfo.SetValue(descriptorObject, Convert.ChangeType(keyValuePair.Value, fieldInfo.FieldType));
+                                isDescriptorNull = false;
+                            }
+
+                            if(isDescriptorNull) {
+                                continue;
                             }
                             
                             activeDescriptors.Add(JsonUtility.ToJson(descriptorObject));
