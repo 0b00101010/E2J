@@ -146,7 +146,13 @@ namespace E2J {
                                     continue;
                                 }
 
-                                fieldInfo.SetValue(descriptorObject, Convert.ChangeType(keyValuePair.Value, fieldInfo.FieldType));
+                                if(fieldInfo.FieldType.IsEnum) {
+                                    fieldInfo.SetValue(descriptorObject, Enum.Parse(fieldInfo.FieldType, keyValuePair.Value));
+                                }
+                                else {
+                                    fieldInfo.SetValue(descriptorObject, Convert.ChangeType(keyValuePair.Value, fieldInfo.FieldType));
+                                }
+                                
                                 isDescriptorNull = false;
                             }
 
