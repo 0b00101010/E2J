@@ -6,43 +6,8 @@ using UnityEditor;
 using UnityEngine;
 
 namespace E2J {
-    public class DescriptorLoader : MonoBehaviour {
-        private static DescriptorLoader instance;
-        public static DescriptorLoader Instance {
-            get {
-                if(instance == null) {
-                    var obj = GameObject.FindObjectOfType<DescriptorLoader>(true);
-
-                    if(obj == null) {
-                        var prefab = Resources.Load<DescriptorLoader>($"Prefabs/DescriptorLoader");
-
-                        if(prefab != null) {
-                            obj = prefab;
-                            Instantiate(prefab.gameObject, Vector2.zero, Quaternion.identity);
-                        }
-                        else {
-                            obj = new GameObject("DescriptorLoader").AddComponent<DescriptorLoader>();
-
-                            var directoryPath = "Assets/Resources/Prefabs";
-                            if(Directory.Exists(directoryPath) == false) {
-                                Directory.CreateDirectory(directoryPath);
-                            }
-
-                            var prefabPath = $"{directoryPath}/DescriptorLoader.prefab";
-                            prefabPath = AssetDatabase.GenerateUniqueAssetPath(prefabPath);
-
-                            PrefabUtility.SaveAsPrefabAssetAndConnect(obj.gameObject, prefabPath, InteractionMode.UserAction);
-                        }
-                    }
-
-                    instance = obj;
-                }
-
-                return instance;
-            }
-        }
-        
-        public T[] ConvertDescriptor<T>() {
+    public static class DescriptorLoader {
+        public static T[] ConvertDescriptor<T>() {
             var attribute = (DescriptorAttribute)Attribute.GetCustomAttribute(typeof(T), typeof(DescriptorAttribute));
 
             if(attribute is null) {
