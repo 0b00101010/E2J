@@ -24,18 +24,18 @@ namespace E2J {
             
             string[] jsonStrings = jsonTextFile.text.Split('\n');
             
-            var descriptors = new List<T>();            
-            
-            foreach(var jsonString in jsonStrings) {
-                if(jsonString.Equals(string.Empty)) {
+            var descriptors = new T[jsonStrings.Length];
+
+            for(int i = 0; i < jsonStrings.Length; i++) {
+                if(jsonStrings[i].Equals(string.Empty)) {
                     continue;
                 }
-                
-                T descriptor = JsonUtility.FromJson<T>(jsonString);
-                descriptors.Add(descriptor);
+
+                T descriptor = JsonUtility.FromJson<T>(jsonStrings[i]);
+                descriptors[i] = descriptor;
             }
-            
-            return descriptors.ToArray();
+
+            return descriptors;
         }
     }
 }
